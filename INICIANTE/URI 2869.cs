@@ -20,7 +20,9 @@ namespace Algoritmos
                 {
                     maxN = maxN / 2;
                     if (maxN > 1)
-                        
+                        break;
+
+
                 }
                 for (int i = 2; i <= Math.Floor(Math.Sqrt(max))+1; i++)
                 {
