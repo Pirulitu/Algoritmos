@@ -33,17 +33,18 @@ class URI2674
         }
     }
 
-    public static Hashtable crivo (int max)
+    public static Hashtable crivo (int max)//crivo de eratóstenes
     {
         int sqrtMax = (int)Math.Sqrt(max)+1;
         
         Hashtable primos = new Hashtable();
 
-        primos.Add(2,2);
+        primos.Add(2,2);//adiciona 2 como primo
         for (int i = 3; i < max; i+=2)
+        //inicialmente adiciona todos numeros impares como primo
             primos.Add(i,i);
         
-        for (int i = 3; i <= sqrtMax; i+=2)
+        for (int i = 3; i <= sqrtMax; i+=2)//remove todos multiplos de i
             if (primos.Contains(i))
                 for (int j = i+i; j < max; j+=i)
                     primos.Remove(j);
