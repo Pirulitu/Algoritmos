@@ -10,7 +10,7 @@ class URI2674
 
         string entrada;
 
-        while (!String.IsNullOrEmpty(entrada = Console.ReadLine()) && entrada != "")
+        while (!String.IsNullOrEmpty(entrada = Console.ReadLine()) && entrada != "")//while not EOF
         {
             int n = Int32.Parse(entrada);
             bool estado = true;
