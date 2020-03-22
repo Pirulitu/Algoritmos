@@ -1,62 +1,57 @@
 """
 Você tem que planejar o itinerário de modo que a distância máxima de um único salto seja minimizada? ir e voltar
 """
+
+
 # passar como parametro a pedra que  eu to
 
-def sapoDinamico(pedras, pedraAtual, solucao, boolIda, distMargem):
-    if len(pedras) == 1:
-        return max(solucao)
+def sapoDinamico(pedras):
 
-    else:
+    vezI = True  # inicialmente a proxima pedra pequena o sapo da ida pode pular
+    solucao = []
 
-        atualPedraTipo = pedraAtual[0]
-        atualPedraDist = int(pedraAtual[2:])
+    sapoI = int(pedras[0][2:])  # sapo da ida inicia em 0
+    sapoV = int(pedras[0][2:])  # sapo da volta tb pq ele vai fazer o percurso da volta, so que inverso
 
-        proximaPedraTipo = pedras[1][0]
-        proximaPedraDist = int(pedras[1][2:])
+    for x in range(1, len(pedras)):
 
-        salto = abs(atualPedraDist - proximaPedraDist)
+        pedraAtualDist = int(pedras[x][2:])
+        pedraAtualTipo = pedras[x][0]
 
-        if atualPedraDist == distMargem:  # se  eu cheguei na margem set falso o valor de que eu estou na ida pra margem
-            boolIda = False
+        if pedraAtualTipo == 'S':  # se a pedra for pequena, so um sapo pode usar
 
-        if proximaPedraTipo == 'S' and boolIda:
+            if vezI:  # se for a vez do sapo da ida
 
-            s1 = sapoDinamico(pedras[1:], pedraAtual, solucao.copy(), boolIda, distMargem)
+                saltoI = abs(pedraAtualDist - sapoI)  # tamanho do pulo que o sapo da ida vai dar
+                sapoI = pedraAtualDist  # o sapo deu o pulo e ficou na pedra
+                solucao.append(saltoI)  # o salto é contado na solucao
 
-            removePedraPequena(pedras, pedras[1])
+                vezI = False  # proxima vez é so sapo da Volta
 
-            solucao.append(salto)  # guarda o salto dado na solucao
-            s2 = sapoDinamico(pedras[1:], pedras[1], solucao.copy(), boolIda, distMargem)
+            else:  # vez do sapo da volta
+                saltoJ = abs(pedraAtualDist - sapoV)
+                sapoV = pedraAtualDist
+                solucao.append(saltoJ)
 
-            return min(s1, s2)
+                vezI = True  # proxima vez é so sapo da Ida
 
-        else:
-            solucao.append(salto)
-            return sapoDinamico(pedras[1:], pedras[1], solucao.copy(), boolIda, distMargem)
+        else:  # se for grande, os dois sapos pulam pra ela
+            saltoI = abs(pedraAtualDist - sapoI)
+            saltoJ = abs(pedraAtualDist - sapoV)
+            sapoI = pedraAtualDist
+            sapoV = pedraAtualDist
+            solucao.append(saltoI)
+            solucao.append(saltoJ)
 
-def removePedraPequena(pedras, elemento):
-
-    aux = pedras.pop(1)
-
-    pedras.remove(elemento)
-
-    pedras.insert(1, aux)
-
-    return pedras
+    return max(solucao)
 
 def formataPedras(p, m):
+
     pedraMargemD = 'B-' + m
     pedraMargemE = 'B-0'
 
     p.insert(0, pedraMargemE)  # adiciona a margem esquerda
     p.append(pedraMargemD)  # adiciona a margem direita
-
-    aux = p.copy()
-    aux.pop()
-    aux.reverse()
-
-    p += aux
 
     return p
 
@@ -66,13 +61,12 @@ if __name__ == '__main__':
     casos = int(input())
 
     for x in range(casos):
-
         distMargem = input().split()[1]
 
         pedras = input().split()  # B big, S small, Int N
 
         pedras = formataPedras(pedras, distMargem)
 
-        s = sapoDinamico(pedras, pedras[0], [], True, int(distMargem))
+        s = sapoDinamico(pedras)
 
         print("Case %d: %d" % (x + 1, s))

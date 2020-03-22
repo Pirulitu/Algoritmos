@@ -1,87 +1,137 @@
-
 def verificaStringAdjacente(genoma):
     tam = len(genoma) // 2
     for x in range(1, tam + 1):
         prefixo = genoma[-x * 2:-x]
         radical = genoma[-x:]
+
         if prefixo == radical:
-            return genoma[:-1]
-    return genoma
+            return False
+    return True
 
-def genomaIterativo(N):
 
-    genoma = "N"
-    trabalhoFeito = {"N": 1}
+# salvar a que deu errado e comparar antes de calcular
 
-    ultimoGenoma = genoma[len(genoma) - 1]
+def genoma():
+    sequencia = "NONPNOPNPONOPNONPNOPNPONPNON"
+    deuErrado = set()
 
-    while len(genoma) < N:
+    while len(sequencia) < 5001:
+
+        ultimoGenoma = sequencia[-1]
 
         if ultimoGenoma == "N":
 
-            genoma += "O"
+            sequencia += "O"
 
-            if genoma in trabalhoFeito:
-                genoma = genoma[:-1] + "P"
-                if genoma in trabalhoFeito:
-                    genoma = genoma[:-2]
-                    ultimoGenoma = genoma[len(genoma) - 1]
+            if sequencia in deuErrado:
+
+                sequencia = sequencia[:-1] + "P"
+
+                if sequencia in deuErrado:
+
+                    sequencia = sequencia[:-1]  # remove o P
+                    deuErrado.add(sequencia)  # adiciona cadeia que nao deu certo nem com O nem com P ao dicionario
+                    sequencia = sequencia[:-1]  # remove o N pra na proxima vez ele verificar e botar o P ou O
+
                 else:
-                    trabalhoFeito[genoma] = 1
-                    genoma = verificaStringAdjacente(genoma)
-                    ultimoGenoma = genoma[len(genoma) - 1]
+                    semConflito = verificaStringAdjacente(sequencia)
+
+                    if semConflito:
+                        continue
+
+                    else:
+                        deuErrado.add(sequencia)
+                        sequencia = sequencia[:-1]
             else:
-                trabalhoFeito[genoma] = 1
-                genoma = verificaStringAdjacente(genoma)
-                ultimoGenoma = genoma[len(genoma) - 1]
+                semConflito = verificaStringAdjacente(sequencia)
+
+                if semConflito:
+                    continue
+
+                else:
+                    deuErrado.add(sequencia)
+                    sequencia = sequencia[:-1]
 
         elif ultimoGenoma == "O":
 
-            genoma += "N"
+            sequencia += "N"
 
-            if genoma in trabalhoFeito:
-                genoma = genoma[:-1] + "P"
+            if sequencia in deuErrado:
 
-                if genoma in trabalhoFeito:
-                    genoma = genoma[:-2]
-                    ultimoGenoma = genoma[len(genoma) - 1]
+                sequencia = sequencia[:-1] + "P"
+
+                if sequencia in deuErrado:
+
+                    sequencia = sequencia[:-1]  # remove o P
+                    deuErrado.add(sequencia)  # adiciona cadeia que nao deu certo nem com O nem com P ao dicionario
+                    sequencia = sequencia[:-1]  # remove o N pra na proxima vez ele verificar e botar o P ou O
 
                 else:
-                    trabalhoFeito[genoma] = 1
-                    genoma = verificaStringAdjacente(genoma)
-                    ultimoGenoma = genoma[len(genoma) - 1]
-            else:
+                    semConflito = verificaStringAdjacente(sequencia)
 
-                trabalhoFeito[genoma] = 1
-                genoma = verificaStringAdjacente(genoma)
-                ultimoGenoma = genoma[len(genoma) - 1]
+                    if semConflito:
+                        continue
+
+                    else:
+                        deuErrado.add(sequencia)
+                        sequencia = sequencia[:-1]
+            else:
+                semConflito = verificaStringAdjacente(sequencia)
+
+                if semConflito:
+                    continue
+
+                else:
+                    deuErrado.add(sequencia)
+                    sequencia = sequencia[:-1]
 
         elif ultimoGenoma == "P":
 
-            genoma += "N"
+            sequencia += "N"
 
-            if genoma in trabalhoFeito:
-                genoma = genoma[:-1] + "O"
-                if genoma in trabalhoFeito:
-                    genoma = genoma[:-2]
-                    ultimoGenoma = genoma[len(genoma) - 1]
+            if sequencia in deuErrado:
+
+                sequencia = sequencia[:-1] + "O"
+
+                if sequencia in deuErrado:
+
+                    sequencia = sequencia[:-1]  # remove o P
+                    deuErrado.add(sequencia)  # adiciona cadeia que nao deu certo nem com O nem com P ao dicionario
+                    sequencia = sequencia[:-1]  # remove o N pra na proxima vez ele verificar e botar o P ou O
+
                 else:
-                    trabalhoFeito[genoma] = 1
-                    genoma = verificaStringAdjacente(genoma)
-                    ultimoGenoma = genoma[len(genoma) - 1]
-            else:
-                trabalhoFeito[genoma] = 1
-                genoma = verificaStringAdjacente(genoma)
-                ultimoGenoma = genoma[len(genoma) - 1]
-    return genoma
+                    semConflito = verificaStringAdjacente(sequencia)
 
+                    if semConflito:
+                        continue
+
+                    else:
+                        deuErrado.add(sequencia)
+                        sequencia = sequencia[:-1]
+            else:
+                semConflito = verificaStringAdjacente(sequencia)
+
+                if semConflito:
+                    continue
+
+                else:
+                    deuErrado.add(sequencia)
+                    sequencia = sequencia[:-1]
+
+    return sequencia
+
+import time
 
 if __name__ == "__main__":
-    string = genomaIterativo(5000)
 
+    i = time.time()
+    genoma = genoma()
+    f = time.time()
+    print(f - i)
     entrada = int(input())
 
     while entrada != 0:
-        print(string[:entrada])
+
+        print(genoma[:entrada])
 
         entrada = int(input())
