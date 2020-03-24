@@ -1,6 +1,7 @@
 from _collections import deque
 
 
+
 def permutacaoElegante(permutacao):
 
     solucao = deque()
@@ -69,9 +70,9 @@ if __name__ == '__main__':
     casos = int(input())
 
     for x in range(casos):
-
-        permutacao = input().split()[1:]
+        entrada = input().split()
+        quant = int(entrada[0])
+        permutacao = entrada[1:quant+1]
         permutacao = formata(permutacao)
         sol = permutacaoElegante(permutacao)
-
         print("Case %d: %d" % (x + 1, sol))
