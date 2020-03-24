@@ -1,6 +1,6 @@
 def verificaStringAdjacente(genoma):
     tam = len(genoma) // 2
-    for x in range(1, tam + 1):
+    for x in range(2, tam + 1):
         prefixo = genoma[-x * 2:-x]
         radical = genoma[-x:]
 

@@ -10,20 +10,37 @@ def permutacaoElegante(permutacao):
 
         # se a diferenca do primeiro elemento da solucao com o maior elemento da permutacao(atual) for maior que
         # a diferenca do ultimo elemento da solucao com o maior elemento da permutacao(atual), adicione no inicio
-        maiorElementoP = permutacao[len(permutacao) - 1]  # maior elemento da permutacao atual
-        if abs(solucao[0] - maiorElementoP) > abs(solucao[len(solucao) - 1] - maiorElementoP):
-
+        maiorElementoP = permutacao[-1]  # maior elemento da permutacao atual
+        if abs(solucao[0] - maiorElementoP) > abs(solucao[-1] - maiorElementoP):
             solucao.appendleft(permutacao.pop())
 
         else:  # se nao adicione no final
             solucao.append(permutacao.pop())
+
+        if permutacao:
+            maiorElementoP = permutacao[-1]  # maior elemento da permutacao atual
+            if abs(solucao[0] - maiorElementoP) > abs(solucao[-1] - maiorElementoP):
+                solucao.appendleft(permutacao.pop())
+
+            else:  # se nao adicione no final
+                solucao.append(permutacao.pop())
 
         # se a diferenca do primeiro elemento da solucao com o menor elemento da permutacao(atual) for maior que
         # a diferenca do ultimo elemento da solucao com o menor elemento da permutacao(atual), adicione no inicio
         if permutacao:
 
             menorElementoP = permutacao[0]  # maior elemento da permutacao atual
-            if abs(solucao[0] - menorElementoP) > abs(solucao[len(solucao) - 1] - menorElementoP):
+            if abs(solucao[0] - menorElementoP) > abs(solucao[-1] - menorElementoP):
+
+                solucao.appendleft(permutacao.popleft())
+
+            else:
+                solucao.append(permutacao.popleft())
+
+        if permutacao:
+
+            menorElementoP = permutacao[0]  # maior elemento da permutacao atual
+            if abs(solucao[0] - menorElementoP) > abs(solucao[-1] - menorElementoP):
 
                 solucao.appendleft(permutacao.popleft())
 
