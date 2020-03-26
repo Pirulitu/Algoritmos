@@ -1,52 +1,34 @@
 from _collections import deque
 
-
-
 def permutacaoElegante(permutacao):
 
+    if len(permutacao) <= 1:
+        return 0
+
+    impar = False
+
+    if len(permutacao) % 2 == 1:
+        elementoMeio = permutacao[len(permutacao)//2]
+        impar = True
+
     solucao = deque()
-    solucao.append(permutacao.popleft())  # adiciona o menor elemento
 
-    while permutacao:  # enquanto tiver elemento
+    for x in range(len(permutacao)//2):  # enquanto tiver elemento
 
-        # se a diferenca do primeiro elemento da solucao com o maior elemento da permutacao(atual) for maior que
-        # a diferenca do ultimo elemento da solucao com o maior elemento da permutacao(atual), adicione no inicio
-        maiorElementoP = permutacao[-1]  # maior elemento da permutacao atual
-        if abs(solucao[0] - maiorElementoP) > abs(solucao[-1] - maiorElementoP):
-            solucao.appendleft(permutacao.pop())
-
-        else:  # se nao adicione no final
+        if x % 2 == 0:
+            solucao.appendleft(permutacao.popleft())
             solucao.append(permutacao.pop())
 
-        if permutacao:
-            maiorElementoP = permutacao[-1]  # maior elemento da permutacao atual
-            if abs(solucao[0] - maiorElementoP) > abs(solucao[-1] - maiorElementoP):
-                solucao.appendleft(permutacao.pop())
+        else:
+            solucao.appendleft(permutacao.pop())
+            solucao.append(permutacao.popleft())
 
-            else:  # se nao adicione no final
-                solucao.append(permutacao.pop())
+    if impar:
+        if abs(solucao[0] - elementoMeio) > abs(solucao[-1] - elementoMeio):
+            solucao.appendleft(elementoMeio)
 
-        # se a diferenca do primeiro elemento da solucao com o menor elemento da permutacao(atual) for maior que
-        # a diferenca do ultimo elemento da solucao com o menor elemento da permutacao(atual), adicione no inicio
-        if permutacao:
-
-            menorElementoP = permutacao[0]  # maior elemento da permutacao atual
-            if abs(solucao[0] - menorElementoP) > abs(solucao[-1] - menorElementoP):
-
-                solucao.appendleft(permutacao.popleft())
-
-            else:
-                solucao.append(permutacao.popleft())
-
-        if permutacao:
-
-            menorElementoP = permutacao[0]  # maior elemento da permutacao atual
-            if abs(solucao[0] - menorElementoP) > abs(solucao[-1] - menorElementoP):
-
-                solucao.appendleft(permutacao.popleft())
-
-            else:
-                solucao.append(permutacao.popleft())
+        else:  # se nao adicione no final
+            solucao.append(elementoMeio)
 
     res = 0
 
