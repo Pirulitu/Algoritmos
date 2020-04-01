@@ -1,23 +1,33 @@
-def sacoPapaiNoel(conjuntos):
 
-    brinquedos = 0
+def sacoPapaiNoel(itens, capacidade=50):
 
-    sobra = len(conjuntos)
+    sacos = []
 
-    capacidadeRestante = 50
+    for x in range(len(itens) + 1):
+        sacos.append([[0, 50, len(itens)] for x in range(capacidade + 1)])
 
-    for razao, quantB, peso in conjuntos:
+    for item in range(1, len(itens) + 1):
 
-        if peso <= capacidadeRestante:
+        for p in range(1, capacidade + 1):
 
-            capacidadeRestante -= peso
+            itemAtual = item - 1
+            quantBri = itens[itemAtual][0]
+            pesoBri = itens[itemAtual][1]
 
-            brinquedos += quantB
-            sobra -= 1
+            if pesoBri <= p:
 
-    pesototal = 50 - capacidadeRestante
+                if quantBri + sacos[itemAtual][p - pesoBri][0] > sacos[itemAtual][p][0]:
+                    sacos[item][p][0] = quantBri + sacos[itemAtual][p - pesoBri][0]
+                    sacos[item][p][1] = sacos[itemAtual][p - pesoBri][1] - pesoBri
+                    sacos[item][p][2] = sacos[itemAtual][p - pesoBri][2] - 1
+                else:
+                    sacos[item][p] = sacos[itemAtual][p]
 
-    return brinquedos, pesototal, sobra
+            else:
+                sacos[item][p] = sacos[itemAtual][p]
+
+    res = sacos[len(itens)][capacidade]
+    return res[0], 50 - res[1], res[2]
 
 
 if __name__ == '__main__':
@@ -34,14 +44,13 @@ if __name__ == '__main__':
             quantB, pesoB = input().split()
             quantB, pesoB = int(quantB), int(pesoB)
 
-            conjunto = (quantB / pesoB, quantB, pesoB)
+            conjunto = (quantB, pesoB)
 
             conjuntos.append(conjunto)
-
-        conjuntos.sort(reverse=True)
 
         brinquedos, peso, sobra = sacoPapaiNoel(conjuntos)
 
         print(brinquedos, "brinquedos")
         print("Peso: %d kg" % peso)
         print("sobra(m) %d pacote(s)" % sobra)
+        print()
